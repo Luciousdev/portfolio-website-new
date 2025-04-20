@@ -27,7 +27,7 @@ const Index = () => {
       
       <footer className="bg-secondary py-8">
         <div className="container mx-auto px-4 text-center">
-          <p className="text-white/80">© {new Date().getFullYear()} Luciousdev. All rights reserved.</p>
+          <p className="text-white/80">Made with love by Lucy, <a href='https://github.com/Luciousdev/portfolio-website-new' target='_blank'>source code</a></p>
         </div>
       </footer>
     </div>

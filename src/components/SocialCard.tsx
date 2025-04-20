@@ -45,7 +45,7 @@ const SocialCard = () => {
     };
 
     fetchDiscordStatus();
-    const interval = setInterval(fetchDiscordStatus, 10000);
+    const interval = setInterval(fetchDiscordStatus, 30000);
     
     return () => clearInterval(interval);
   }, []);

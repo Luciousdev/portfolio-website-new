@@ -87,6 +87,10 @@
   }
 }
 
+a {
+  color: var(--accent) !important;
+}
+
 @layer base {
   * {
     @apply border-border;
