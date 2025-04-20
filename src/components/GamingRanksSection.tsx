@@ -14,10 +14,43 @@ interface BeatSaberStats {
   pp: number;
 }
 
+interface OWRank {
+  division: string;
+  tier: number;
+  role_icon: string;
+  rank_icon: string;
+  tier_icon: string;
+}
+
+interface OWStats {
+  username: string;
+  avatar: string;
+  namecard: string;
+  title: string;
+  endorsement: {
+    level: number;
+    frame: string;
+  };
+  competitive: {
+    pc: {
+      season: number;
+      tank: OWRank;
+      damage: OWRank;
+      support: OWRank;
+      open: OWRank;
+    };
+    console: null;
+  };
+  last_updated_at: number;
+}
+
+
 const GamingRanksSection = () => {
   const [beatSaberStats, setBeatSaberStats] = useState<BeatSaberStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [owStats, setOwStats] = useState<OWStats | null>(null);
+  const [owStatsAlt, setOwStatsAlt] = useState<OWStats | null>(null);
 
   useEffect(() => {
     const fetchBeatSaberStats = async () => {
@@ -46,6 +79,30 @@ const GamingRanksSection = () => {
       }
     };
 
+    const fetchOWStats = async () => {
+      try {
+        const res = await fetch('https://overfast-api.tekrop.fr/players/%C5%81%C3%BC%C3%A7%C3%BD%C3%9Fw%C3%AA%C3%AB%C5%A3%C5%A1-2419/summary');
+        if (!res.ok) throw new Error('Failed to fetch Overwatch stats');
+        const data = await res.json();
+        setOwStats(data);
+      } catch (err) {
+        console.error('Overwatch stats fetch error:', err);
+      }
+    };
+
+    const fetchOWStatsAlt = async () => {
+      try {
+        const res = await fetch('https://overfast-api.tekrop.fr/players/Karmg-2779/summary');
+        if (!res.ok) throw new Error('Failed to fetch Overwatch stats');
+        const data = await res.json();
+        setOwStatsAlt(data);
+      } catch (err) {
+        console.error('Overwatch stats fetch error:', err);
+      }
+    };
+
+    fetchOWStats();
+    fetchOWStatsAlt();
     fetchBeatSaberStats();
   }, []);
 
@@ -139,12 +196,16 @@ const GamingRanksSection = () => {
                 <div className="absolute -inset-1 bg-gradient-to-r from-accent to-primary rounded-full opacity-75 blur"></div>
                 <Avatar className="h-20 w-20 border-2 border-accent/50 relative">
                   <AvatarFallback className="bg-muted text-muted-foreground">OW</AvatarFallback>
-                  <AvatarImage src="https://blz-contentstack-images.akamaized.net/v3/assets/blt9c12f249ac15c7ec/blt6109d53563e8986f/622906a991f4232f0085d3cc/Masthead_Overwatch2_Logo.png" />
+                  <AvatarImage src={owStats?.avatar ?? "/owicon.png"} alt="Overwatch Avatar" />
                 </Avatar>
               </div>
               
               <h3 className="text-2xl font-bold mb-4">Overwatch</h3>
+              {owStats?.title && (
+                <p className="text-sm text-muted-foreground -mt-1 mb-2">{owStats.title}</p>
+              )}
               
+              {owStats ? (
               <div className="flex flex-col gap-4 w-full">
                 <div className="text-center mb-3">
                   <span className="text-muted-foreground">Playing as </span>
@@ -152,41 +213,56 @@ const GamingRanksSection = () => {
                   <p className="text-sm text-muted-foreground mt-1">(Peak Ranks)</p>
                 </div>
                 
-                <div className="grid grid-cols-3 gap-4">
+                <div className="grid grid-cols-2 gap-4">
                   <div className="flex flex-col items-center p-3 bg-background/40 rounded-lg border border-accent/10">
                     <div className="h-10 w-10 mb-2 flex items-center justify-center">
                       <img 
-                        src="https://upload.wikimedia.org/wikipedia/commons/d/d0/Tank_icon.svg" 
+                        src={owStats.competitive.pc.tank.role_icon} 
                         alt="Tank Role"
                         className="w-full h-full object-contain"
                       />
                     </div>
                     <span className="text-sm text-muted-foreground">Tank</span>
                     <span className="text-xl font-bold">Platinum 5</span>
+                    <span className="text-sm text-muted-foreground">Current rank: {owStats.competitive.pc.tank.division} {owStats.competitive.pc.tank.tier}</span>
                   </div>
                   
                   <div className="flex flex-col items-center p-3 bg-background/40 rounded-lg border border-accent/10">
                     <div className="h-10 w-10 mb-2 flex items-center justify-center">
                       <img 
-                        src="https://upload.wikimedia.org/wikipedia/commons/a/af/Damage_icon.svg" 
+                        src={owStats.competitive.pc.damage.role_icon} 
                         alt="DPS Role"
                         className="w-full h-full object-contain"
                       />
                     </div>
                     <span className="text-sm text-muted-foreground">Damage</span>
-                    <span className="text-xl font-bold">Gold 5</span>
+                    <span className="text-xl font-bold">Gold 4</span>
+                    <span className="text-sm text-muted-foreground">Current rank: {owStats.competitive.pc.damage.division} {owStats.competitive.pc.damage.tier}</span>
                   </div>
                   
                   <div className="flex flex-col items-center p-3 bg-background/40 rounded-lg border border-accent/10">
                     <div className="h-10 w-10 mb-2 flex items-center justify-center">
                       <img 
-                        src="https://upload.wikimedia.org/wikipedia/commons/f/ff/Support_icon.svg" 
+                        src={owStats.competitive.pc.support.role_icon}
                         alt="Support Role"
                         className="w-full h-full object-contain"
                       />
                     </div>
                     <span className="text-sm text-muted-foreground">Support</span>
                     <span className="text-xl font-bold">Diamond 5</span>
+                    <span className="text-sm text-muted-foreground">Current rank: {owStats.competitive.pc.support.division} {owStats.competitive.pc.support.tier}</span>
+                  </div>
+                  <div className="flex flex-col items-center p-3 bg-background/40 rounded-lg border border-accent/10">
+                    <div className="h-10 w-10 mb-2 flex items-center justify-center">
+                      <img 
+                        src={owStats.competitive.pc.open.role_icon}
+                        alt="Support Role"
+                        className="w-full h-full object-contain"
+                      />
+                    </div>
+                    <span className="text-sm text-muted-foreground">Open Queue</span>
+                    <span className="text-xl font-bold">Diamond 4</span>
+                    <span className="text-sm text-muted-foreground">Current rank: {owStatsAlt.competitive.pc.open.division} {owStatsAlt.competitive.pc.open.tier}</span>
                   </div>
                 </div>
                 
@@ -196,6 +272,9 @@ const GamingRanksSection = () => {
                   <span className="font-bold">Junker Queen, Genji, Juno/Kiriko</span>
                 </div>
               </div>
+              ) : (
+              <div className="text-sm text-muted-foreground mt-2">Loading Overwatch stats...</div>
+            )}
             </div>
           </Card>
         </div>

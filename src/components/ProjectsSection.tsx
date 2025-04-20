@@ -23,14 +23,14 @@ const projects: Project[] = [
     title: "Mika Assistant",
     description: "An AI assistant that will listen and will eventually be able to interact with your OS.",
     tags: ["Python", "Linux", "AI"],
-    image: "https://media.licdn.com/dms/image/sync/v2/D4E27AQEMEmID8yO7jQ/articleshare-shrink_800/articleshare-shrink_800/0/1744197251996?e=1745506800&v=beta&t=aPUwrYIZEbDpGuW5VY9VfBkDEgnQx0XmSE7ygYigFI8",
+    image: "/mika-assistant.png",
     github: "https://github.com/Mika-Project/mika-assistant",
   },
   {
     title: "Mika Linux",
     description: "A linux distribution trying to help people make the switch to linux.",
     tags: ["C++", "OS Development", "QML"],
-    image: "https://media.licdn.com/dms/image/sync/v2/D5627AQHYU1g0lnMbCg/articleshare-shrink_800/articleshare-shrink_800/0/1741124084710?e=1745506800&v=beta&t=kX5UriRNgqiH6gYFcM3Rw81BsSOQAvCeyA2qzdPBaHk",
+    image: "/base-iso.png",
     github: "https://github.com/Mika-Project/base-iso",
   },
 ];
