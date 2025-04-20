@@ -1,10 +1,22 @@
-
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+import SpotifyCard from './SpotifyCard';
+
+interface SpotifyData {
+  timestamps: {
+    start: number;
+    end: number;
+  };
+  album: string;
+  album_art_url: string;
+  artist: string;
+  song: string;
+}
 
 interface DiscordStatus {
   avatar: string;
   status: 'online' | 'idle' | 'dnd' | 'offline';
+  spotify?: SpotifyData;
 }
 
 const SocialCard = () => {
@@ -14,19 +26,17 @@ const SocialCard = () => {
   useEffect(() => {
     const fetchDiscordStatus = async () => {
       try {
-        // This endpoint is a placeholder as the real Discord API requires authentication
-        // In production, you'd need a backend service to fetch this data
         const response = await axios.get(`https://api.lanyard.rest/v1/users/${discordId}`);
         
         if (response.data?.data) {
           setDiscordStatus({
             avatar: `https://cdn.discordapp.com/avatars/${discordId}/${response.data.data.discord_user.avatar}.png?size=128`,
-            status: response.data.data.discord_status
+            status: response.data.data.discord_status,
+            spotify: response.data.data.listening_to_spotify ? response.data.data.spotify : undefined
           });
         }
       } catch (error) {
         console.error('Failed to fetch Discord status:', error);
-        // Fallback avatar if API fetch fails
         setDiscordStatus({
           avatar: `https://cdn.discordapp.com/embed/avatars/0.png`,
           status: 'offline'
@@ -35,8 +45,7 @@ const SocialCard = () => {
     };
 
     fetchDiscordStatus();
-    // Refresh status every minute
-    const interval = setInterval(fetchDiscordStatus, 60000);
+    const interval = setInterval(fetchDiscordStatus, 10000);
     
     return () => clearInterval(interval);
   }, []);
@@ -55,9 +64,9 @@ const SocialCard = () => {
       <div className="container mx-auto px-4">
         <h2 className="text-4xl font-bold text-center mb-12 text-white">Connect With Me</h2>
         
-        <div className="flex justify-center">
+        <div className="flex flex-col items-center space-y-8">
           <div className="social-container bg-[#18181b] flex flex-col md:flex-row max-w-4xl rounded-lg overflow-hidden shadow-2xl animate-fade-in">
-            <div className="p-6 md:p-12 flex items-center justify-center">
+            <div className="p-6 md:p-12 flex flex-col items-center justify-center">
               <div className="relative">
                 {discordStatus && (
                   <>
@@ -74,7 +83,6 @@ const SocialCard = () => {
                 )}
               </div>
             </div>
-            
             <div className="social-sep hidden md:block" />
             
             <div id="social-center" className="p-6 grid grid-cols-1 sm:grid-cols-2 gap-6">
@@ -175,6 +183,9 @@ const SocialCard = () => {
               </div>
             </div>
           </div>
+          {discordStatus?.spotify && (
+            <SpotifyCard spotify={discordStatus.spotify} />
+          )}
         </div>
       </div>
     </section>
