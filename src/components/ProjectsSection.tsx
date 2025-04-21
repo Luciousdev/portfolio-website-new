@@ -1,4 +1,3 @@
-
 import { Github, ExternalLink } from 'lucide-react';
 
 interface Project {

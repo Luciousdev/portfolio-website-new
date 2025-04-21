@@ -1,4 +1,3 @@
-
 import { Code, Gamepad2, BookOpen, Video } from 'lucide-react';
 
 const AboutSection = () => {

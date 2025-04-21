@@ -11,7 +11,7 @@ const StreamSection = () => {
           <div className="w-full lg:w-2/3 animate-fade-in">
             <div className="aspect-video w-full bg-muted rounded-lg overflow-hidden shadow-xl">
               <iframe
-                src="https://player.twitch.tv/?channel=lucy_sweets&parent=localhost&parent=lovable.dev"
+                src="https://player.twitch.tv/?channel=lucy_sweets&parent=localhost&parent=luciousdev.nl"
                 height="100%"
                 width="100%"
                 allowFullScreen

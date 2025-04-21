@@ -1,4 +1,3 @@
-
 import { useEffect, useState } from 'react';
 import { Shield, Award, Medal } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import Navbar from '@/components/Navbar';
 import HeroSection from '@/components/HeroSection';
@@ -7,6 +6,7 @@ import ProjectsSection from '@/components/ProjectsSection';
 import StreamSection from '@/components/StreamSection';
 import SocialCard from '@/components/SocialCard';
 import GamingRanksSection from '@/components/GamingRanksSection';
+import TimelineSection from '@/components/TimelineSection';
 
 const Index = () => {
   const [soundEnabled, setSoundEnabled] = useState(false);
@@ -20,6 +20,7 @@ const Index = () => {
       <Navbar soundEnabled={soundEnabled} toggleSound={toggleSound} />
       <HeroSection soundEnabled={soundEnabled} />
       <AboutSection />
+      <TimelineSection />
       <ProjectsSection />
       <GamingRanksSection />
       <StreamSection />
